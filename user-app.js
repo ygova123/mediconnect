@@ -386,7 +386,7 @@ function renderPcosContent() {
   $("#pcos-guide-title").textContent = guide.title || SAMPLE_PCOS_GUIDE.title;
   $("#pcos-guide-description").textContent = guide.description || SAMPLE_PCOS_GUIDE.description;
   const foods = Array.isArray(guide.foods) ? guide.foods.filter((item) => typeof item === "string" && item.trim()) : [];
-  const foodImages = ["assets/meal-colorful-plate.jpg", "assets/meal-green-bowl.jpg", "assets/meal-grain-bowl.jpg", "assets/meal-breakfast.jpg"];
+  const foodImages = ["meal-colorful-plate.jpg", "meal-green-bowl.jpg", "meal-grain-bowl.jpg", "meal-breakfast.jpg"];
   $("#pcos-food-grid").innerHTML = foods.map((food, index) => `<article class="pcos-food-card"><div class="pcos-food-photo"><img src="${foodImages[index % foodImages.length]}" alt="" loading="lazy"><span class="pcos-food-count">0${index + 1}</span></div><div class="pcos-food-copy"><span>FOOD TO EXPLORE</span><p>${escapeHtml(food)}</p></div></article>`).join("");
   const precautions = Array.isArray(guide.precautions) ? guide.precautions.filter((item) => typeof item === "string" && item.trim()) : [];
   const precautionIcons = ["shield-check", "info", "heart-pulse", "calendar-heart"];
@@ -412,7 +412,7 @@ function pcosPlanCard(plan) {
 }
 
 function safeMealImage(value) {
-  return /^assets\/meal-[a-z0-9-]+\.jpg$/.test(value || "") ? value : "";
+  return /^meal-[a-z0-9-]+\.jpg$/.test(value || "") ? value : "";
 }
 
 function closeDietPlanDetails() {
@@ -473,7 +473,7 @@ function hospitalCard(hospital) {
   const hospitalType = String(hospital.hospitalType || "Hospital");
   const openingHours = String(hospital.openingHours || "");
   return `<article class="hospital-card">
-    <div class="hospital-photo">${images[0] ? `<img loading="lazy" src="${escapeAttribute(images[0])}" alt="${escapeAttribute(hospital.name || "Hospital")}">` : `<div class="photo-fallback"><img src="assets/hospital-corridor.jpg" alt="" loading="lazy"><span><i data-icon="building-2"></i></span><small>Representative hospital photo</small></div>`}<span class="photo-type"><i data-icon="stethoscope"></i>${escapeHtml(hospitalType)}</span>${images.length > 1 ? `<span class="photo-count"><i data-icon="image-plus"></i>${images.length} photos</span>` : ""}</div>
+    <div class="hospital-photo">${images[0] ? `<img loading="lazy" src="${escapeAttribute(images[0])}" alt="${escapeAttribute(hospital.name || "Hospital")}">` : `<div class="photo-fallback"><img src="hospital-corridor.jpg" alt="" loading="lazy"><span><i data-icon="building-2"></i></span><small>Representative hospital photo</small></div>`}<span class="photo-type"><i data-icon="stethoscope"></i>${escapeHtml(hospitalType)}</span>${images.length > 1 ? `<span class="photo-count"><i data-icon="image-plus"></i>${images.length} photos</span>` : ""}</div>
     <div class="hospital-info">
       <div class="hospital-top"><div class="hospital-title"><h3>${escapeHtml(hospital.name || "Hospital")}</h3><div class="hospital-place"><i data-icon="map-pin"></i>${escapeHtml([hospital.district, hospital.city].filter(Boolean).join(", "))}</div></div><div class="rating-badge"><div class="rating-line"><span class="rating-stars">${stars}</span><b>${escapeHtml(ratingText)}</b></div><div class="review-count">${escapeHtml(reviewLabel)}</div></div></div>
       <p class="hospital-summary">${escapeHtml(hospital.summarizedReview || "Hospital details and care information are available. Contact the hospital to learn more.")}</p>
