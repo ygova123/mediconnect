@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a2540">
+  <meta name="description" content="Discover hospitals and care options near you with MediConnect.">
+  <title>MediConnect | Find care near you</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/user-app.js"></script>
+</head>
+<body class="user-body">
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="auth-screen" class="auth-screen">
+    <div class="auth-visual">
+      <img class="auth-visual-photo" src="assets/hospital-room.jpg" alt="" fetchpriority="high">
+      <a class="brand brand-light" href="./" aria-label="MediConnect home">
+        <span class="brand-mark" aria-hidden="true"><i data-icon="heart-pulse"></i></span>
+        <span>Medi<span>Connect</span></span>
+      </a>
+      <div class="auth-copy">
+        <span class="eyebrow"><i data-icon="sparkles"></i> YOUR HEALTH, YOUR CHOICE</span>
+        <h1>Find care that feels <em>right.</em></h1>
+        <p>Discover trusted hospitals, explore helpful information, and take your next step with confidence.</p>
+        <div class="trust-note"><span class="trust-icon"><i data-icon="shield-check"></i></span><span><b>A clearer path to care</b><small>Hospital information, all in one place.</small></span></div>
+      </div>
+      <div class="visual-orb orb-one"></div><div class="visual-orb orb-two"></div>
+    </div>
+    <div class="auth-panel-wrap">
+      <div class="auth-panel">
+        <a class="brand auth-mobile-brand" href="./">
+          <span class="brand-mark"><i data-icon="heart-pulse"></i></span><span>Medi<span>Connect</span></span>
+        </a>
+        <p id="auth-kicker" class="section-kicker">WELCOME BACK</p>
+        <h2 id="auth-title">Sign in to MediConnect</h2>
+        <p id="auth-description" class="muted">Your healthcare discovery journey starts here.</p>
+        <button id="google-auth" class="button button-outline google-button" type="button"><span class="google-g">G</span> Continue with Google</button>
+        <div class="divider"><span>OR CONTINUE WITH EMAIL</span></div>
+        <form id="email-auth-form" class="form-stack">
+          <label id="name-field" class="field hidden"><span>Full name</span><span class="input-wrap"><i data-icon="user-round"></i><input id="auth-name" name="name" autocomplete="name" placeholder="Your name"></span></label>
+          <label class="field"><span>Email address</span><span class="input-wrap"><i data-icon="mail"></i><input id="auth-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></span></label>
+          <label class="field"><span>Password</span><span class="input-wrap"><i data-icon="lock-keyhole"></i><input id="auth-password" name="password" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required></span></label>
+          <p id="auth-error" class="form-error hidden" role="alert"></p>
+          <button id="email-submit" class="button button-primary button-wide" type="submit">Sign in <i data-icon="arrow-right"></i></button>
+        </form>
+        <p class="auth-switch"><span id="auth-switch-copy">New to MediConnect?</span> <button id="auth-switch" type="button">Create an account</button></p>
+        <p class="privacy-note"><i data-icon="shield"></i> Sign-in is securely handled by Firebase Authentication.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="user-app" class="app-frame hidden">
+    <header class="user-header">
+      <a class="brand" href="#" data-page-link="home" aria-label="MediConnect home">
+        <span class="brand-mark"><i data-icon="heart-pulse"></i></span>
+        <span>Medi<span>Connect</span></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-page-link="home"><i data-icon="house"></i> Home</button>
+        <button class="nav-link" data-page-link="diet"><i data-icon="salad"></i> Diet Plan</button>
+        <button class="nav-link" data-page-link="pcos"><i data-icon="heart-pulse"></i> PCOD / PCOS</button>
+        <button class="nav-link" data-page-link="profile"><i data-icon="user-round"></i> Profile</button>
+      </nav>
+      <div class="user-menu-wrap">
+        <button id="user-menu-button" class="user-menu-button" type="button" aria-expanded="false">
+          <span id="user-avatar" class="user-avatar">M</span><span id="user-menu-name" class="user-menu-name">Member</span><i data-icon="chevron-down"></i>
+        </button>
+        <div id="user-menu" class="user-menu hidden">
+          <div class="menu-user-info"><b id="menu-user-name">Member</b><small id="menu-user-email"></small></div>
+          <button type="button" data-page-link="profile"><i data-icon="user-round"></i> Profile</button>
+          <button id="sign-out" type="button" class="sign-out-link"><i data-icon="log-out"></i> Sign out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section id="page-home" class="page-section">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-layout">
+            <div class="hero-content">
+              <span class="eyebrow"><i data-icon="sparkles"></i> YOUR HEALTH, YOUR CHOICE</span>
+              <h1>Find the right hospital <span>for you.</span></h1>
+              <p>Explore care options near you and take your next step with confidence.</p>
+              <form id="hospital-search" class="search-bar">
+                <i data-icon="search"></i>
+                <input id="search-input" type="search" placeholder="Search hospitals by name or city" aria-label="Search hospitals by name or city">
+                <button type="button" id="clear-search" class="clear-search hidden" aria-label="Clear search"><i data-icon="x"></i></button>
+                <button type="submit" class="button button-primary search-submit">Search</button>
+              </form>
+              <div class="city-filter"><span class="city-label"><i data-icon="map-pin"></i> Popular cities</span><div id="city-chips" class="chip-list"><button class="city-chip selected" data-city="">All cities</button></div></div>
+            </div>
+            <aside class="hero-photo-card" aria-label="MediConnect care promise">
+              <img src="assets/woman-doctor.jpg" alt="Healthcare professional ready to help" fetchpriority="high">
+              <div class="hero-photo-caption"><span class="hero-photo-badge"><i data-icon="heart-pulse"></i></span><span><b>Care, made clearer</b><small>Explore hospitals with confidence</small></span></div>
+              <span class="hero-photo-shine"></span>
+            </aside>
+          </div>
+        </div>
+        <section class="results-section">
+          <div class="section-heading">
+            <div><p class="section-kicker">FIND CARE NEAR YOU</p><h2>Hospitals to explore <span id="hospital-count" class="count-label">(0)</span></h2></div>
+            <button id="reset-filters" class="button button-quiet hidden"><i data-icon="list-filter"></i> Clear filters</button>
+          </div>
+          <p id="user-data-error" class="notice notice-error hidden" role="alert"></p>
+          <div id="hospital-grid" class="hospital-grid"></div>
+          <div id="empty-state" class="empty-state hidden">
+            <span class="empty-icon"><i data-icon="building-2"></i></span><h3 id="empty-title">No hospitals found</h3><p id="empty-copy">Try a different search or city.</p>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-diet" class="page-section hidden">
+        <div class="info-hero diet-hero diet-plans-hero"><span class="eyebrow"><i data-icon="leaf"></i> EVERYDAY NOURISHMENT</span><h1>Find a food plan that fits your life.</h1><p>Explore admin-curated meal ideas or answer a few simple questions to find plans matching your preferences.</p><button id="start-diet-quiz" class="button diet-hero-button"><i data-icon="sparkles"></i> Find my plan</button></div>
+        <p id="diet-data-error" class="notice notice-error hidden" role="alert"></p>
+        <section id="diet-quiz" class="diet-quiz-panel hidden">
+          <div class="diet-quiz-heading"><div><p class="section-kicker">A FEW QUICK QUESTIONS</p><h2>What would feel helpful?</h2><p>Your answers stay in this browser and are not saved to your account.</p></div><button id="close-diet-quiz" class="icon-button" type="button" aria-label="Close questionnaire"><i data-icon="x"></i></button></div>
+          <form id="diet-quiz-form"><div id="diet-question-list" class="diet-question-list"></div><p class="diet-safety-note"><i data-icon="info"></i> General wellness suggestions only. Ingredient filters are not an allergy-safety guarantee; always check product labels.</p><div class="diet-quiz-actions"><button class="button button-outline" id="reset-diet-quiz" type="reset">Clear answers</button><button class="button button-primary" type="submit"><i data-icon="sparkles"></i> Show matching plans</button></div></form>
+        </section>
+        <section id="diet-recommendations" class="diet-results-section hidden"><div class="section-heading"><div><p class="section-kicker">MATCHED TO YOUR ANSWERS</p><h2>Plans to explore</h2></div><button id="edit-diet-answers" class="button button-quiet" type="button"><i data-icon="pencil"></i> Edit answers</button></div><div id="diet-recommended-grid" class="diet-plan-grid"></div></section>
+        <section class="diet-browse-section">
+          <div class="section-heading"><div><p class="section-kicker">CURATED MEAL INSPIRATION</p><h2>Popular plan ideas</h2><p class="diet-section-copy">Choose a goal to browse plans added by the MediConnect team.</p></div></div>
+          <div id="diet-goal-filters" class="diet-goal-filters"></div>
+          <div id="diet-plans-grid" class="diet-plan-grid"></div>
+          <div id="diet-empty-state" class="empty-state hidden"><span class="empty-icon"><i data-icon="salad"></i></span><h3 id="diet-empty-title">No plans in this category yet</h3><p id="diet-empty-copy">Try another goal or ask your administrator to add a plan.</p></div>
+        </section>
+        <p class="medical-disclaimer diet-disclaimer"><i data-icon="info"></i> Diet plans are general educational content, not medical advice or treatment. They do not promise weight loss or skin results. Consult a qualified clinician for personal needs, pregnancy, allergies, or medical conditions.</p>
+      </section>
+
+      <section id="page-pcos" class="page-section hidden">
+        <p id="pcos-data-error" class="notice notice-error hidden" role="alert"></p>
+        <div class="info-hero pcos-hero pcos-wellness-hero">
+          <div class="pcos-hero-copy"><span class="eyebrow"><i data-icon="sparkles"></i> PCOD / PCOS WELLNESS</span><h1 id="pcos-guide-title">Small, steady habits. Support that fits you.</h1><p id="pcos-guide-description"></p></div>
+          <div class="pcos-hero-photo"><img src="assets/woman-doctor.jpg" alt="Woman healthcare professional in a bright clinic" loading="lazy"><span><i data-icon="heart-pulse"></i> Support that starts with listening</span></div>
+        </div>
+        <section class="pcos-content-section">
+          <div class="section-heading"><div><p class="section-kicker">FOOD IDEAS TO EXPLORE</p><h2>Build a satisfying plate</h2><p class="diet-section-copy">A variety of foods can support everyday wellbeing. Choose what is realistic and enjoyable for you.</p></div></div>
+          <div id="pcos-food-grid" class="pcos-food-grid"></div>
+        </section>
+        <section class="pcos-content-section">
+          <div class="section-heading"><div><p class="section-kicker">A FEW THINGS TO KEEP IN MIND</p><h2>Gentle, practical precautions</h2></div></div>
+          <div id="pcos-precaution-grid" class="pcos-precaution-grid"></div>
+        </section>
+        <section class="pcos-content-section pcos-plan-section">
+          <div class="section-heading"><div><p class="section-kicker">MEAL INSPIRATION</p><h2>Popular PCOD / PCOS meal plans</h2><p class="diet-section-copy">Flexible sample menus, not a prescribed or therapeutic diet.</p></div></div>
+          <div id="pcos-plans-grid" class="diet-plan-grid"></div>
+          <div id="pcos-plans-empty" class="empty-state hidden"><span class="empty-icon"><i data-icon="salad"></i></span><h3>No plans available right now</h3><p>Check back later for more meal inspiration.</p></div>
+        </section>
+        <article class="info-card visit-card pcos-visit-card"><div><span class="section-kicker">PREPARE FOR YOUR VISIT</span><h2>Your questions deserve time.</h2><p>Consider noting your cycle dates, symptoms, medicines, and how they affect daily life. Bring your notes to a qualified healthcare professional.</p></div><i data-icon="move-right"></i></article>
+        <p class="medical-disclaimer"><i data-icon="info"></i> This is general education, not diagnosis or treatment. No meal plan can cure PCOD / PCOS. Consult a qualified healthcare professional for individual guidance, especially with medicines, pregnancy, allergies, or other health conditions.</p>
+      </section>
+
+      <section id="page-profile" class="page-section hidden">
+        <div class="section-heading profile-heading"><div><p class="section-kicker">YOUR ACCOUNT</p><h1>Profile</h1></div></div>
+        <article class="profile-card">
+          <div class="profile-cover"><span id="profile-avatar" class="profile-avatar">M</span><div><h2 id="profile-name">MediConnect member</h2><p>Your personal account</p></div></div>
+          <div class="profile-details">
+            <div class="profile-row"><i data-icon="user-round"></i><span><small>Name</small><b id="profile-name-detail">Not provided</b></span></div>
+            <div class="profile-row"><i data-icon="mail"></i><span><small>Email address</small><b id="profile-email">Not provided</b></span></div>
+            <div class="profile-row"><i data-icon="shield-check"></i><span><small>Account status</small><b id="profile-verification">Signed in</b></span></div>
+            <div class="profile-row"><i data-icon="calendar-days"></i><span><small>Member since</small><b id="profile-created">—</b></span></div>
+          </div>
+          <button id="profile-sign-out" class="button button-outline"><i data-icon="log-out"></i> Sign out</button>
+        </article>
+      </section>
+    </main>
+
+    <nav class="mobile-nav" aria-label="Bottom navigation">
+      <button class="mobile-nav-link active" data-page-link="home"><i data-icon="house"></i><span>Home</span></button>
+      <button class="mobile-nav-link" data-page-link="diet"><i data-icon="salad"></i><span>Diet Plan</span></button>
+      <button class="mobile-nav-link" data-page-link="pcos"><i data-icon="heart-pulse"></i><span>PCOD/PCOS</span></button>
+      <button class="mobile-nav-link" data-page-link="profile"><i data-icon="user-round"></i><span>Profile</span></button>
+    </nav>
+  </div>
+  <dialog id="diet-plan-dialog" class="hospital-dialog diet-plan-dialog">
+    <div class="diet-detail-content">
+      <div class="dialog-heading"><div><p id="diet-detail-goal" class="section-kicker"></p><h2 id="diet-detail-title"></h2></div><button id="close-diet-detail" class="icon-button" type="button" aria-label="Close plan details"><i data-icon="x"></i></button></div>
+      <p id="diet-detail-description" class="diet-detail-description"></p>
+      <div id="diet-detail-meta" class="diet-detail-meta"></div>
+      <div class="diet-meal-detail-grid">
+        <article class="diet-meal-detail"><span>BREAKFAST</span><p id="diet-detail-breakfast"></p></article>
+        <article class="diet-meal-detail"><span>LUNCH</span><p id="diet-detail-lunch"></p></article>
+        <article class="diet-meal-detail"><span>DINNER</span><p id="diet-detail-dinner"></p></article>
+        <article class="diet-meal-detail"><span>SNACKS</span><p id="diet-detail-snacks"></p></article>
+      </div>
+      <p id="diet-detail-ingredients" class="diet-detail-ingredients"></p>
+      <button id="diet-detail-dismiss" class="button button-primary" type="button">Done</button>
+    </div>
+  </dialog>
+</body>
+</html>

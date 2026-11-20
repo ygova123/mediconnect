@@ -1,0 +1,25 @@
+# MediConnect app-generation prompt
+
+Copy and paste this prompt into your preferred coding assistant:
+
+> Build **MediConnect**, a polished hospital discovery website with a patient-facing web app and a separate admin web app. Use plain **HTML, CSS, and vanilla JavaScript** (no React or UI framework), Firebase Authentication for email/password and Google login, and Firebase Realtime Database for hospitals/cities/tags. Do not use Firebase Storage. Compress selected hospital photos in the browser to JPEG data URLs before storing them with the hospital record in Realtime Database; limit each compressed photo to 350 KB and each hospital to 4 images, and explain the Realtime Database bandwidth tradeoff. Use Lucide icons, a modern sans-serif font, deep teal/navy (`#0A2540`) with bright aqua (`#00D4FF`), responsive layouts, subtle glass effects, soft shadows, and restrained hover animations. Keep the scope to the features below.
+>
+> **Firebase web config (use exactly):**
+> ```js
+> const firebaseConfig = {
+>   apiKey: "AIzaSyAZdEVr7aWZXOtkzBq8klS5jAeX9pF5q4g",
+>   authDomain: "order-c0a7e.firebaseapp.com",
+>   databaseURL: "https://order-c0a7e-default-rtdb.firebaseio.com",
+>   projectId: "order-c0a7e",
+>   storageBucket: "order-c0a7e.firebasestorage.app",
+>   messagingSenderId: "153062125272",
+>   appId: "1:153062125272:web:d9912f1e7d1c751b16b1ad",
+>   measurementId: "G-64YB15MKVR"
+> };
+> ```
+>
+> **User app:** Show a login/sign-up screen with an email/password form and a separate “Continue with Google” option. After sign-in, show the MediConnect brand at the header’s left and an avatar/dropdown at the right. Provide Home, Diet Plan, PCOD/PCOS, and Profile navigation (bottom on mobile, top on desktop). Home includes a prominent search that matches hospital name OR city, plus city filter chips populated only from admin-created cities. Design polished, high-information hospital cards with large photo, distinct rating/review badge, hospital type, name, admin-written summary, specialty chips, hours, emergency/ambulance status, full location, appointment status, colored admin tags, and a prominent `tel:` Call Now action. Keep the visual hierarchy clear and responsive; never add individual review lists. Profile shows the signed-in Firebase user’s details. Diet Plan lets users browse admin-authored meal ideas by goal or match plans using a short questionnaire about goal, eating style, and ingredients to avoid. Keep answers in browser memory only; never save them to Firebase. Clearly state that diet information is general education and that ingredient filtering does not guarantee allergy safety. PCOD/PCOS shows admin-managed, balanced food suggestions, practical precautions, and popular meal-plan examples. Avoid medical or cure claims; clearly state the content is general education, not diagnosis or treatment. Bundle local food and hospital photography, including a healthcare professional portrait, for the sign-in, discovery, diet, and PCOD/PCOS views; do not rely on an image API.
+>
+> **Admin app:** Protect `/admin` using Firebase Authentication and an administrator allowlist in Realtime Database at `/admins/{uid}`. Enforce all writes with Realtime Database rules; do not rely on hiding admin UI as the only security. Admin navigation has Dashboard, Hospitals, Tags, Cities, Diet Plans, and PCOD/PCOS. Add/edit/delete hospitals with name, hospital type, district, city chosen from admin-created cities, full location/address, specialties/services, opening hours, emergency/ambulance availability, rating from 0 to 5, review count, “No reviews yet” toggle, a short review summary, up to 4 image uploads with previews that are compressed client-side and saved as data URLs in Realtime Database, appointment availability, call phone number, and selected custom tags. Provide searchable hospital listings with city filtering. Admins can add/edit/delete colored tags and cities. Admins can also add/edit/delete meal plans with a supported goal, eating style, listed ingredients, meal ideas, and bundled photo selection, and customize the wording (not answer choices) of the three matching questions. Store these records under `/dietPlans/{id}` and `/dietQuestions/{kind}`; users' answers must remain client-side and ephemeral. Let admins edit the PCOD/PCOS headline, introduction, healthy-food suggestions, precautions, and popular meal plans (including bundled photo selection) under `/pcosGuide/guide` and `/pcosPlans/{id}`. Seed sample wellness content once, without overwriting existing admin changes.
+>
+> **Quality and delivery:** Include complete runnable source, deployment instructions, and Firebase Realtime Database security rules. Validate and compress image uploads; show loading, empty, and error states; escape user-managed text before rendering; provide accessible labels and keyboard operation; never silently swallow data/auth failures. Do not invent backend services or unrelated features. Explain that Firebase client config is public and the security rules are the authorization boundary. List the folder tree and commands to run/build/deploy.

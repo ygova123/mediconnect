@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a2540">
+  <title>MediConnect Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/admin-app.js"></script>
+</head>
+<body class="admin-body">
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="admin-guard" class="admin-guard">
+    <div class="guard-card">
+      <span class="brand-mark"><i data-icon="heart-pulse"></i></span>
+      <p class="section-kicker">MEDICONNECT ADMIN</p>
+      <h1 id="guard-title">Checking administrator access</h1>
+      <p id="guard-message">Please wait while we verify your account.</p>
+      <a id="guard-login" class="button button-primary hidden" href="index.html">Sign in to MediConnect</a>
+      <button id="guard-signout" class="button button-outline hidden" type="button">Sign out</button>
+      <span id="guard-spinner" class="spinner"></span>
+    </div>
+  </section>
+  <div id="admin-app" class="admin-frame hidden">
+    <aside class="admin-sidebar">
+      <a class="brand" href="admin.html"><span class="brand-mark"><i data-icon="heart-pulse"></i></span><span>Medi<span>Connect</span></span></a>
+      <div class="admin-label">WORKSPACE</div>
+      <nav class="admin-nav" aria-label="Admin navigation">
+        <button class="admin-nav-link active" data-admin-page="dashboard"><i data-icon="layout-dashboard"></i> Dashboard</button>
+        <button class="admin-nav-link" data-admin-page="hospitals"><i data-icon="building-2"></i> Hospitals</button>
+        <button class="admin-nav-link" data-admin-page="tags"><i data-icon="tags"></i> Tags</button>
+        <button class="admin-nav-link" data-admin-page="cities"><i data-icon="map-pinned"></i> Cities</button>
+        <button class="admin-nav-link" data-admin-page="diet-plans"><i data-icon="salad"></i> Diet plans</button>
+        <button class="admin-nav-link" data-admin-page="pcos-content"><i data-icon="heart-pulse"></i> PCOD / PCOS</button>
+      </nav>
+      <div class="sidebar-bottom"><div id="admin-user-label" class="admin-user-label"></div><a class="sidebar-view-link" href="index.html"><i data-icon="external-link"></i> View user app</a><button id="admin-signout" class="sidebar-signout" type="button"><i data-icon="log-out"></i> Sign out</button></div>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div><b>Admin workspace</b><small>Manage hospital discovery content</small></div><span class="secure-badge"><i data-icon="shield-check"></i> Secure workspace</span></header>
+      <div class="admin-content">
+        <section id="admin-view-dashboard" class="admin-view">
+          <div class="admin-page-heading"><div><p class="section-kicker">OVERVIEW</p><h1>Dashboard</h1><p>Keep your hospital directory fresh and useful.</p></div><button class="button button-primary" data-open-hospital-form><i data-icon="plus"></i> Add hospital</button></div>
+          <p id="admin-error" class="notice notice-error hidden" role="alert"></p>
+          <div class="stats-grid">
+            <button class="stat-card" data-admin-page="hospitals"><span class="stat-icon blue"><i data-icon="building-2"></i></span><span><b id="stat-hospitals">0</b><small>Hospitals</small></span><i data-icon="arrow-up-right"></i></button>
+            <button class="stat-card" data-admin-page="cities"><span class="stat-icon green"><i data-icon="map-pinned"></i></span><span><b id="stat-cities">0</b><small>Cities</small></span><i data-icon="arrow-up-right"></i></button>
+            <button class="stat-card" data-admin-page="tags"><span class="stat-icon purple"><i data-icon="tags"></i></span><span><b id="stat-tags">0</b><small>Tags</small></span><i data-icon="arrow-up-right"></i></button>
+          </div>
+          <div class="dashboard-grid">
+            <article class="admin-card">
+              <div class="card-heading"><div><h2>Recently added</h2><p>Latest hospital records</p></div><button class="text-button" data-admin-page="hospitals">View all <i data-icon="arrow-up-right"></i></button></div>
+              <div id="recent-hospitals" class="recent-list"></div>
+            </article>
+            <article class="admin-card">
+              <div class="card-heading"><div><h2>Quick actions</h2><p>Manage directory building blocks</p></div></div>
+              <div class="quick-actions">
+                <button data-open-hospital-form><i data-icon="building-2"></i><span><b>Add a hospital</b><small>Create a hospital listing</small></span><i data-icon="arrow-up-right"></i></button>
+                <button data-admin-page="cities"><i data-icon="map-pinned"></i><span><b>Manage cities</b><small>Control search city filters</small></span><i data-icon="arrow-up-right"></i></button>
+                <button data-admin-page="tags"><i data-icon="tags"></i><span><b>Manage tags</b><small>Organize hospital details</small></span><i data-icon="arrow-up-right"></i></button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section id="admin-view-hospitals" class="admin-view hidden">
+          <div class="admin-page-heading"><div><p class="section-kicker">DIRECTORY</p><h1>Hospitals</h1><p>Search, filter, and maintain hospital listings.</p></div><button class="button button-primary" data-open-hospital-form><i data-icon="plus"></i> Add hospital</button></div>
+          <div class="admin-card table-card">
+            <div class="table-toolbar"><label class="search-input"><i data-icon="search"></i><input id="hospital-admin-search" placeholder="Search name, city, or district"></label><select id="hospital-city-filter" aria-label="Filter hospitals by city"><option value="">All cities</option></select></div>
+            <div class="table-scroll"><table><thead><tr><th>Hospital</th><th>City</th><th>Rating</th><th>Appointments</th><th class="align-right">Actions</th></tr></thead><tbody id="hospitals-table"></tbody></table></div>
+            <div id="hospital-table-empty" class="table-empty hidden">No hospitals match this search.</div>
+            <div id="hospital-table-count" class="table-count"></div>
+          </div>
+        </section>
+        <section id="admin-view-tags" class="admin-view hidden">
+          <div class="admin-page-heading"><div><p class="section-kicker">DIRECTORY SETTINGS</p><h1>Tags</h1><p>Create labels to describe hospital services and qualities.</p></div></div>
+          <div class="catalog-layout"><article class="admin-card"><div class="card-heading"><div><h2>All tags</h2><p>Click a tag to edit it.</p></div></div><div id="tags-list" class="catalog-list"></div></article><article class="admin-card catalog-form-card"><h2 id="tag-form-title">Add a tag</h2><form id="tag-form" class="form-stack"><label class="field"><span>Tag name</span><input id="tag-name" class="text-input" maxlength="70" placeholder="e.g. Emergency care" required></label><label class="field"><span>Tag color</span><input id="tag-color" class="color-input" type="color" value="#0f766e"></label><div class="form-actions"><button class="button button-primary" type="submit" id="tag-submit"><i data-icon="plus"></i> Add tag</button><button class="button button-outline hidden" type="button" id="tag-cancel">Cancel</button></div></form></article></div>
+        </section>
+        <section id="admin-view-cities" class="admin-view hidden">
+          <div class="admin-page-heading"><div><p class="section-kicker">DIRECTORY SETTINGS</p><h1>Cities</h1><p>Cities added here appear as filters in the user app.</p></div></div>
+          <div class="catalog-layout"><article class="admin-card"><div class="card-heading"><div><h2>All cities</h2><p>Click a city to edit its name.</p></div></div><div id="cities-list" class="catalog-list"></div></article><article class="admin-card catalog-form-card"><h2 id="city-form-title">Add a city</h2><form id="city-form" class="form-stack"><label class="field"><span>City name</span><input id="city-name" class="text-input" maxlength="70" placeholder="e.g. Seattle" required></label><div class="form-actions"><button class="button button-primary" type="submit" id="city-submit"><i data-icon="plus"></i> Add city</button><button class="button button-outline hidden" type="button" id="city-cancel">Cancel</button></div></form></article></div>
+        </section>
+        <section id="admin-view-diet-plans" class="admin-view hidden">
+          <div class="admin-page-heading"><div><p class="section-kicker">WELLNESS CONTENT</p><h1>Diet plans</h1><p>Publish general meal inspiration and manage the plan-matching questions.</p></div></div>
+          <div class="admin-tabs" role="tablist" aria-label="Diet plan management">
+            <button type="button" class="admin-tab active" data-diet-admin-tab="plans"><i data-icon="salad"></i> Plans</button>
+            <button type="button" class="admin-tab" data-diet-admin-tab="questions"><i data-icon="list-filter"></i> Questionnaire</button>
+          </div>
+          <p id="diet-admin-error" class="notice notice-error hidden" role="alert"></p>
+          <div id="diet-admin-plans" class="diet-admin-panel">
+            <div class="diet-admin-layout">
+              <article class="admin-card diet-admin-list-card">
+                <div class="card-heading"><div><h2>Published plans</h2><p>Plans appear in the user Diet Plan section.</p></div></div>
+                <div id="diet-plan-list" class="diet-admin-list"></div>
+              </article>
+              <article class="admin-card diet-admin-form-card">
+                <div class="card-heading"><div><h2 id="diet-plan-form-title">Add a diet plan</h2><p>Write practical, non-medical meal inspiration.</p></div></div>
+                <form id="diet-plan-form" class="form-stack">
+                  <input id="diet-plan-id" type="hidden">
+                  <label class="field"><span>Plan title *</span><input id="diet-plan-title" class="text-input" maxlength="90" placeholder="e.g. Colorful skin-support meals" required></label>
+                  <div class="form-grid">
+                    <label class="field"><span>Goal *</span><select id="diet-plan-goal" class="text-input" required><option value="">Choose a goal</option><option value="weight-management">Gradual weight management</option><option value="skin-support">Skin-supportive nutrition</option><option value="balanced-eating">Balanced everyday eating</option></select></label>
+                    <label class="field"><span>Eating style</span><select id="diet-plan-type" class="text-input"><option value="any">Flexible / any</option><option value="vegetarian">Vegetarian</option><option value="vegan">Vegan</option><option value="omnivore">Includes meat / fish</option></select></label>
+                  </div>
+                  <label class="field"><span>Short description *</span><textarea id="diet-plan-description" class="text-input" rows="3" maxlength="350" placeholder="Describe the general meal approach, without promising health results." required></textarea></label>
+                  <label class="field"><span>Card photo</span><select id="diet-plan-image" class="text-input"><option value="assets/meal-colorful-plate.jpg">Colorful plate</option><option value="assets/meal-green-bowl.jpg">Green bowl</option><option value="assets/meal-grain-bowl.jpg">Grain bowl</option><option value="assets/meal-breakfast.jpg">Breakfast table</option></select></label>
+                  <label class="field"><span>Ingredients included (used for user's avoid filter)</span><input id="diet-plan-ingredients" class="text-input" maxlength="250" placeholder="e.g. milk, wheat, peanuts"><small class="field-hint">Comma-separated. List ingredients that appear in the meal ideas.</small></label>
+                  <label class="field"><span>Breakfast *</span><textarea id="diet-plan-breakfast" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Lunch *</span><textarea id="diet-plan-lunch" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Dinner *</span><textarea id="diet-plan-dinner" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Snack ideas (optional)</span><textarea id="diet-plan-snacks" class="text-input" rows="2" maxlength="220"></textarea></label>
+                  <div class="form-actions"><button id="diet-plan-submit" class="button button-primary" type="submit"><i data-icon="plus"></i> Add plan</button><button id="diet-plan-cancel" class="button button-outline hidden" type="button">Cancel</button></div>
+                </form>
+              </article>
+            </div>
+          </div>
+          <div id="diet-admin-questions" class="diet-admin-panel hidden">
+            <div class="diet-question-admin-layout">
+              <article class="admin-card diet-admin-list-card">
+                <div class="card-heading"><div><h2>User matching questions</h2><p>Customize one question for each matching step.</p></div></div>
+                <p class="question-admin-note">Answer choices stay consistent so questions match plan goals, eating styles, and ingredient filters.</p>
+                <div id="diet-question-list" class="diet-admin-list"></div>
+              </article>
+              <article class="admin-card diet-admin-form-card">
+                <div class="card-heading"><div><h2 id="diet-question-form-title">Customize a question</h2><p>Prompts only; user answers are not stored.</p></div></div>
+                <form id="diet-question-form" class="form-stack">
+                  <label class="field"><span>Matching step</span><select id="diet-question-kind" class="text-input"><option value="goal">Food goal</option><option value="dietType">Eating style</option><option value="avoidIngredients">Foods to avoid</option></select></label>
+                  <label class="field"><span>Question prompt *</span><textarea id="diet-question-label" class="text-input" rows="3" maxlength="150" required></textarea></label>
+                  <p id="diet-question-options" class="question-options-hint"></p>
+                  <div class="form-actions"><button id="diet-question-submit" class="button button-primary" type="submit"><i data-icon="check"></i> Save question</button><button id="diet-question-reset" class="button button-outline" type="button">Use default</button></div>
+                </form>
+              </article>
+            </div>
+          </div>
+          <p class="medical-disclaimer"><i data-icon="info"></i> Keep plans general and non-medical. Do not promise weight loss or skin outcomes; users with allergies or health conditions should consult a qualified professional.</p>
+        </section>
+        <section id="admin-view-pcos-content" class="admin-view hidden">
+          <div class="admin-page-heading"><div><p class="section-kicker">WELLNESS CONTENT</p><h1>PCOD / PCOS</h1><p>Manage the user guide, practical food ideas, precautions, and featured meal plans.</p></div></div>
+          <div class="admin-tabs" role="tablist" aria-label="PCOD / PCOS content management">
+            <button type="button" class="admin-tab active" data-pcos-admin-tab="guide"><i data-icon="book-open-text"></i> Guide & suggestions</button>
+            <button type="button" class="admin-tab" data-pcos-admin-tab="plans"><i data-icon="salad"></i> Popular meal plans</button>
+          </div>
+          <p id="pcos-admin-error" class="notice notice-error hidden" role="alert"></p>
+          <div id="pcos-admin-guide" class="pcos-admin-panel">
+            <div class="diet-question-admin-layout">
+              <article class="admin-card diet-admin-form-card pcos-guide-form-card">
+                <div class="card-heading"><div><h2>Page introduction</h2><p>Keep this general and supportive, not a medical promise.</p></div></div>
+                <form id="pcos-guide-form" class="form-stack">
+                  <label class="field"><span>Headline *</span><input id="pcos-guide-title" class="text-input" maxlength="120" required></label>
+                  <label class="field"><span>Introduction *</span><textarea id="pcos-guide-description" class="text-input" rows="4" maxlength="500" required></textarea></label>
+                  <label class="field"><span>Healthy food suggestions (one per line) *</span><textarea id="pcos-guide-foods" class="text-input" rows="7" maxlength="1200" required></textarea></label>
+                  <label class="field"><span>Precautions and care notes (one per line) *</span><textarea id="pcos-guide-precautions" class="text-input" rows="7" maxlength="1600" required></textarea></label>
+                  <div class="form-actions"><button id="pcos-guide-submit" class="button button-primary" type="submit"><i data-icon="check"></i> Save guide</button><button id="pcos-guide-reset" class="button button-outline" type="button">Load sample text</button></div>
+                </form>
+              </article>
+              <article class="admin-card pcos-guide-preview-card">
+                <span class="diet-question-type">USER PAGE PREVIEW</span>
+                <h2>Helpful, responsible guidance</h2>
+                <p>The user page displays food ideas and precautions as separate, easy-to-scan lists. Keep each point short and supportive.</p>
+                <div class="pcos-preview-note"><i data-icon="shield-check"></i><span>PCOS varies between people. Avoid cure claims, restrictive rules, and supplement or medication instructions.</span></div>
+                <img src="assets/woman-doctor.jpg" alt="Woman healthcare professional" loading="lazy">
+              </article>
+            </div>
+          </div>
+          <div id="pcos-admin-plans" class="pcos-admin-panel hidden">
+            <div class="diet-admin-layout">
+              <article class="admin-card diet-admin-list-card">
+                <div class="card-heading"><div><h2>Popular PCOS meal plans</h2><p>Plans are visible on the user PCOD / PCOS page.</p></div></div>
+                <div id="pcos-plan-list" class="diet-admin-list"></div>
+              </article>
+              <article class="admin-card diet-admin-form-card">
+                <div class="card-heading"><div><h2 id="pcos-plan-form-title">Add a meal plan</h2><p>Write flexible, non-medical meal inspiration.</p></div></div>
+                <form id="pcos-plan-form" class="form-stack">
+                  <input id="pcos-plan-id" type="hidden">
+                  <label class="field"><span>Plan title *</span><input id="pcos-plan-title" class="text-input" maxlength="90" placeholder="e.g. Plant-forward meal ideas" required></label>
+                  <label class="field"><span>Focus label *</span><input id="pcos-plan-focus" class="text-input" maxlength="50" placeholder="e.g. Everyday balance" required></label>
+                  <label class="field"><span>Short description *</span><textarea id="pcos-plan-description" class="text-input" rows="3" maxlength="350" required></textarea></label>
+                  <label class="field"><span>Card photo</span><select id="pcos-plan-image" class="text-input"><option value="assets/meal-colorful-plate.jpg">Colorful plate</option><option value="assets/meal-green-bowl.jpg">Green bowl</option><option value="assets/meal-grain-bowl.jpg">Grain bowl</option><option value="assets/meal-breakfast.jpg">Breakfast table</option></select></label>
+                  <label class="field"><span>Ingredients included</span><input id="pcos-plan-ingredients" class="text-input" maxlength="250" placeholder="Comma-separated ingredients"></label>
+                  <label class="field"><span>Breakfast *</span><textarea id="pcos-plan-breakfast" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Lunch *</span><textarea id="pcos-plan-lunch" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Dinner *</span><textarea id="pcos-plan-dinner" class="text-input" rows="2" maxlength="220" required></textarea></label>
+                  <label class="field"><span>Snack ideas (optional)</span><textarea id="pcos-plan-snacks" class="text-input" rows="2" maxlength="220"></textarea></label>
+                  <div class="form-actions"><button id="pcos-plan-submit" class="button button-primary" type="submit"><i data-icon="plus"></i> Add plan</button><button id="pcos-plan-cancel" class="button button-outline hidden" type="button">Cancel</button></div>
+                </form>
+              </article>
+            </div>
+          </div>
+          <p class="medical-disclaimer"><i data-icon="info"></i> PCOD / PCOS content is general education, not diagnosis or treatment. Avoid guarantees and encourage users to discuss personal health, medication, pregnancy, and allergies with a qualified professional.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="hospital-dialog" class="hospital-dialog">
+    <form id="hospital-form" method="dialog" class="hospital-form">
+      <div class="dialog-heading"><div><p class="section-kicker">HOSPITAL DIRECTORY</p><h2 id="hospital-form-title">Add hospital</h2></div><button type="button" class="icon-button" id="close-hospital-form" aria-label="Close dialog"><i data-icon="x"></i></button></div>
+      <p id="hospital-form-error" class="notice notice-error hidden" role="alert"></p>
+      <input id="hospital-id" type="hidden">
+      <div class="form-grid">
+        <label class="field"><span>Hospital name *</span><input id="hospital-name" class="text-input" maxlength="120" required></label>
+        <label class="field"><span>District</span><input id="hospital-district" class="text-input" maxlength="100" placeholder="e.g. Downtown"></label>
+        <label class="field"><span>City *</span><select id="hospital-city" class="text-input" required><option value="">Select a city</option></select></label>
+        <label class="field"><span>Full address / location</span><input id="hospital-address" class="text-input" maxlength="250" placeholder="Street address or area"></label>
+        <label class="field"><span>Hospital type</span><input id="hospital-type" class="text-input" list="hospital-type-options" maxlength="70" placeholder="e.g. General hospital"><datalist id="hospital-type-options"><option value="General hospital"></option><option value="Specialty hospital"></option><option value="Community hospital"></option><option value="Teaching hospital"></option><option value="Clinic"></option></datalist></label>
+        <label class="field"><span>Specialties / services</span><input id="hospital-specialties" class="text-input" maxlength="250" placeholder="Cardiology, maternity, diagnostics"><small class="field-hint">Separate each specialty or service with a comma.</small></label>
+        <label class="field"><span>Rating (0–5)</span><div class="rating-control"><span id="rating-stars" class="rating-stars"></span><input id="hospital-rating" class="text-input" type="number" min="0" max="5" step="0.1" value="0" required></div></label>
+        <label class="field"><span>Review count</span><input id="hospital-reviews" class="text-input" type="number" min="0" step="1" value="0"></label>
+        <label class="checkbox-field span-two"><input id="hospital-no-reviews" type="checkbox"><span>No reviews yet</span></label>
+        <label class="field span-two"><span>Summarized review</span><textarea id="hospital-summary" class="text-input" rows="3" maxlength="500" placeholder="A short, helpful summary based on local patient reviews"></textarea></label>
+        <label class="field"><span>Opening hours</span><input id="hospital-hours" class="text-input" maxlength="100" placeholder="e.g. Open 24 hours or Mon–Sat, 8 am–8 pm"></label>
+        <label class="checkbox-field"><input id="hospital-emergency" type="checkbox"><span>Emergency / ambulance service available</span></label>
+        <label class="field span-two"><span>Hospital images (JPG, PNG, WebP; compressed before saving)</span><span class="upload-zone"><i data-icon="image-plus"></i><b>Choose images</b><small>Up to 4 compressed images per hospital</small><input id="hospital-images" type="file" accept="image/jpeg,image/png,image/webp" multiple></span></label>
+        <div id="hospital-image-previews" class="image-previews span-two"></div>
+        <label class="checkbox-field"><input id="hospital-appointments" type="checkbox"><span>Appointments available</span></label>
+        <label class="field"><span>Direct call phone number</span><input id="hospital-phone" class="text-input" type="tel" maxlength="30" placeholder="+1 555 0100"></label>
+        <fieldset class="field span-two"><legend>Hospital tags</legend><div id="hospital-tags-select" class="tag-select-list"></div></fieldset>
+      </div>
+      <div class="dialog-actions"><button id="cancel-hospital-form" class="button button-outline" type="button">Cancel</button><button id="save-hospital" class="button button-primary" type="submit"><i data-icon="check"></i> Save hospital</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
